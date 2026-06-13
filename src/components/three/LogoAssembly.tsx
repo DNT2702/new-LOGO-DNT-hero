@@ -132,7 +132,7 @@ export function LogoAssembly({ progress }: LogoAssemblyProps) {
     pos.needsUpdate = true;
 
     const mat = points.material as THREE.PointsMaterial;
-    mat.opacity = (0.15 + assembled * 0.65) * (1 - faded);
+    mat.opacity = (0.2 + assembled * 0.75) * (1 - faded);
 
     if (faded >= 1) {
       done.current = true;
@@ -146,7 +146,7 @@ export function LogoAssembly({ progress }: LogoAssemblyProps) {
         <bufferAttribute attach="attributes-position" args={[positions, 3]} />
         <bufferAttribute attach="attributes-color" args={[colors, 3]} />
       </bufferGeometry>
-      <pointsMaterial size={0.05} vertexColors transparent opacity={0} sizeAttenuation depthWrite={false} blending={THREE.AdditiveBlending} />
+      <pointsMaterial size={0.065} vertexColors transparent opacity={0} sizeAttenuation depthWrite={false} blending={THREE.AdditiveBlending} />
     </points>
   );
 }

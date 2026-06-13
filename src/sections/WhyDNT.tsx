@@ -29,7 +29,7 @@ export function WhyDNT() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-10% 0px" }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="rounded-3xl border border-white/8 bg-white/[0.015] p-6 sm:p-10"
+            className="rounded-3xl border border-white/8 bg-white/[0.015] p-6 shadow-[0_20px_50px_-24px_rgba(0,0,0,0.6)] sm:p-10"
           >
             <h3 className="font-display text-2xl font-semibold text-muted">Traditional Agencies</h3>
             <div className="mt-8 flex flex-col gap-4">
@@ -63,7 +63,11 @@ export function WhyDNT() {
               className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full opacity-40 blur-[100px]"
               style={{ background: "radial-gradient(circle, rgba(124,92,255,0.6), transparent 70%)" }}
             />
-            <h3 className="font-display text-2xl font-semibold text-gradient">DNT Web</h3>
+            <div
+              className="pointer-events-none absolute -bottom-24 -left-16 h-56 w-56 rounded-full opacity-25 blur-[100px]"
+              style={{ background: "radial-gradient(circle, rgba(255,197,107,0.5), transparent 70%)" }}
+            />
+            <h3 className="font-display text-2xl font-semibold text-gradient-signature">DNT Web</h3>
             <div className="mt-8 flex flex-col gap-4">
               {comparisonRows.map((row, i) => (
                 <motion.div

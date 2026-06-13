@@ -11,7 +11,7 @@ interface Building {
   color: string;
 }
 
-const CITY_Z = -92;
+const CITY_Z = -64;
 
 function generateBuildings(): Building[] {
   const buildings: Building[] = [];

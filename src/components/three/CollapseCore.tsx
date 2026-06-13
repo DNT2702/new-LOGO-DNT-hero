@@ -42,7 +42,7 @@ export function CollapseCore({ progress, reduced = false }: CollapseCoreProps) {
 
   useFrame((state) => {
     const p = progress.get();
-    const collapse = THREE.MathUtils.smoothstep(p, 0.86, 1.0);
+    const collapse = THREE.MathUtils.smoothstep(p, 0.89, 1.0);
 
     const points = pointsRef.current;
     if (points) {

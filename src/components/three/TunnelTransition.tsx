@@ -15,7 +15,7 @@ const colorCyan = new THREE.Color("#4ce0ff");
  * A data tunnel of light streaks the camera flies through between World 1
  * and World 2 — the "wormhole" connecting the Origin to the Technology Galaxy.
  */
-export function TunnelTransition({ zStart = -1, zEnd = -28, count = 480 }: TunnelTransitionProps) {
+export function TunnelTransition({ zStart = 4, zEnd = -30, count = 480 }: TunnelTransitionProps) {
   const lineRef = useRef<THREE.LineSegments>(null);
 
   const { positions, colors, speeds, lengths, baseZ } = useMemo(() => {

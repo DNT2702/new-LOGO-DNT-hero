@@ -7,9 +7,14 @@ export function Results() {
     <section className="relative py-28 sm:py-36">
       <div className="container-px mx-auto">
         <div className="glass-strong relative overflow-hidden rounded-[2.5rem] px-6 py-16 sm:px-12">
+          <div className="signature-divider absolute inset-x-0 top-0" />
           <div
             className="pointer-events-none absolute left-1/2 top-1/2 h-[40rem] w-[40rem] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-30 blur-[140px]"
             style={{ background: "radial-gradient(circle, rgba(124,92,255,0.5), transparent 70%)" }}
+          />
+          <div
+            className="pointer-events-none absolute -right-24 -bottom-24 h-[26rem] w-[26rem] rounded-full opacity-25 blur-[120px]"
+            style={{ background: "radial-gradient(circle, rgba(255,197,107,0.4), transparent 70%)" }}
           />
 
           <div className="relative z-10 grid grid-cols-2 gap-10 sm:grid-cols-4">

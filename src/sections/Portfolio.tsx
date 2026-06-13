@@ -53,7 +53,8 @@ export function Portfolio() {
         className="flex flex-col gap-6 lg:h-full lg:w-max lg:flex-row lg:items-center lg:gap-8 lg:pl-[6vw]"
       >
         <div className="container-px shrink-0 lg:w-[35vw] lg:px-0">
-          <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-white/10 px-4 py-1.5 text-xs font-medium uppercase tracking-[0.2em] text-cyan">
+          <div className="mb-3 inline-flex items-center gap-2.5 rounded-full border border-white/10 px-4 py-1.5 text-xs font-medium uppercase tracking-[0.2em] text-cyan">
+            <span className="signature-dot" />
             Selected Work
           </div>
           <h2 className="font-display text-[clamp(2rem,4.5vw,3.5rem)] font-semibold leading-[1.1] tracking-tight">

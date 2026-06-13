@@ -65,8 +65,8 @@ export function Contact() {
               data-cursor-hover
               className="glass group flex items-center gap-4 rounded-2xl p-5 transition-colors hover:border-white/20"
             >
-              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary/20 to-cyan/20 ring-1 ring-white/10">
-                <MessageCircle className="h-5 w-5 text-primary-2" />
+              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-cyan/20 to-gold/20 ring-1 ring-white/10">
+                <MessageCircle className="h-5 w-5 text-cyan" />
               </span>
               <div>
                 <div className="text-xs uppercase tracking-widest text-muted">WhatsApp</div>
@@ -80,8 +80,8 @@ export function Contact() {
               data-cursor-hover
               className="glass group flex items-center gap-4 rounded-2xl p-5 transition-colors hover:border-white/20"
             >
-              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary/20 to-cyan/20 ring-1 ring-white/10">
-                <CalendarClock className="h-5 w-5 text-primary-2" />
+              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-gold/20 to-primary/20 ring-1 ring-white/10">
+                <CalendarClock className="h-5 w-5 text-gold" />
               </span>
               <div>
                 <div className="text-xs uppercase tracking-widest text-muted">Schedule</div>

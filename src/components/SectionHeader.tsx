@@ -18,8 +18,9 @@ export function SectionHeader({ eyebrow, title, description, align = "left", cla
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
-        className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 px-4 py-1.5 text-xs font-medium uppercase tracking-[0.2em] text-cyan"
+        className="mb-4 inline-flex items-center gap-2.5 rounded-full border border-white/10 px-4 py-1.5 text-xs font-medium uppercase tracking-[0.2em] text-cyan"
       >
+        <span className="signature-dot" />
         {eyebrow}
       </motion.div>
       <h2 className="font-display text-[clamp(2rem,4.5vw,3.5rem)] font-semibold leading-[1.1] tracking-tight">

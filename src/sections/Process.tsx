@@ -63,7 +63,10 @@ export function Process() {
                       )}
                     />
 
-                    <div className="glass rounded-3xl p-6 transition-colors duration-300 hover:border-white/20 sm:p-8">
+                    <div className="glass relative overflow-hidden rounded-3xl p-6 transition-colors duration-300 hover:border-white/20 sm:p-8">
+                      <span className="pointer-events-none absolute bottom-2 right-5 font-display text-6xl font-semibold text-white/[0.04]">
+                        {step.number}
+                      </span>
                       <span className="font-mono text-sm text-cyan">{step.number}</span>
                       <h3 className="mt-2 font-display text-2xl font-semibold sm:text-3xl">{step.title}</h3>
                       <p className="mt-3 text-sm leading-relaxed text-muted sm:text-base">{step.description}</p>

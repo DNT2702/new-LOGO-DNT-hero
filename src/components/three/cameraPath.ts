@@ -11,29 +11,40 @@ export interface Waypoint {
 
 /**
  * The camera's journey through the universe, keyed to global scroll progress.
- * Each waypoint marks a "beat" — a world, a transition, or a reveal.
+ * Waypoints are timed against each section's measured scroll fraction so that
+ * a "world" actually arrives with the content it belongs to:
+ *
+ *   0.000 - 0.073  Hero          -> World 1: The Origin
+ *   0.073 - 0.164  Services      -> Wormhole -> World 2: The Technology Galaxy
+ *   0.164 - 0.255  Why DNT        -> World 2 continues
+ *   0.255 - 0.618  Portfolio      -> World 4: The Portfolio Museum (holographic city)
+ *   0.618 - 0.773  Process        -> World 3: The Creation Engine
+ *   0.773 - 0.815  Results        -> World 5: The Results Universe
+ *   0.815 - 0.905  Testimonials   -> World 6: The Future
+ *   0.905 - 1.000  Contact        -> Collapse
  */
 export const waypoints: Waypoint[] = [
   // World 1 — The Origin (Hero)
   { p: 0.0, pos: [0, 0, 6.4], look: [1.4, 0, 0], fov: 38, fog: { color: "#0d0a18", near: 14, far: 36 } },
-  // Dolly-in toward the core, beginning the descent
-  { p: 0.06, pos: [1.0, 0.25, 2.0], look: [1.4, 0, -3], fov: 50, fog: { color: "#0a0a16", near: 7, far: 24 } },
-  // Wormhole / data tunnel — wide FOV, dense fog, sense of speed
-  { p: 0.15, pos: [0, -0.15, -10], look: [0, 0, -24], fov: 74, fog: { color: "#06141f", near: 1.5, far: 15 } },
-  // World 2 — The Technology Galaxy (Services)
-  { p: 0.27, pos: [0.5, 0.6, -26], look: [-0.5, 0, -38], fov: 44, fog: { color: "#0a0f20", near: 9, far: 32 } },
-  { p: 0.36, pos: [-1.2, -0.4, -40], look: [1.2, 0.2, -52], fov: 42, fog: { color: "#0c0d22", near: 9, far: 32 } },
-  // World 3 — The Creation Engine (Why DNT + Process)
-  { p: 0.46, pos: [2.0, 0.4, -54], look: [-2, 0, -66], fov: 45, fog: { color: "#150c20", near: 8, far: 30 } },
-  { p: 0.58, pos: [-2.0, -0.3, -70], look: [2, 0.2, -82], fov: 44, fog: { color: "#171025", near: 8, far: 30 } },
-  // World 4 — The Portfolio Museum
-  { p: 0.66, pos: [1.6, 0.5, -86], look: [-1.4, 0, -98], fov: 43, fog: { color: "#1f160a", near: 9, far: 32 } },
-  // World 5 — The Results Universe
-  { p: 0.78, pos: [-1.4, -0.4, -102], look: [1.2, 0.2, -114], fov: 45, fog: { color: "#081e22", near: 8, far: 30 } },
-  // World 6 — The Future
-  { p: 0.9, pos: [0, 0.3, -120], look: [0, 0, -132], fov: 46, fog: { color: "#140a20", near: 7, far: 28 } },
-  // Collapse — the universe folds into the contact point
-  { p: 1.0, pos: [0, 0, -134], look: [0, 0, -152], fov: 27, fog: { color: "#050507", near: 1, far: 11 } },
+  { p: 0.05, pos: [1.0, 0.25, 2.0], look: [1.4, 0, -3], fov: 46, fog: { color: "#0a0a16", near: 7, far: 24 } },
+  // Wormhole / data tunnel — Hero -> Services, dolly zoom
+  { p: 0.085, pos: [0, -0.15, -10], look: [0, 0, -24], fov: 74, fog: { color: "#06141f", near: 1.5, far: 15 } },
+  // World 2 — The Technology Galaxy (Services + Why DNT)
+  { p: 0.12, pos: [0.6, 0.5, -26], look: [-0.6, 0.1, -40], fov: 46, fog: { color: "#0a0f20", near: 9, far: 32 } },
+  { p: 0.2, pos: [-1.2, -0.3, -36], look: [1.0, 0, -50], fov: 44, fog: { color: "#0c0d22", near: 9, far: 32 } },
+  // World 4 — The Portfolio Museum (holographic city)
+  { p: 0.255, pos: [1.0, 0.3, -44], look: [-1.0, 0, -58], fov: 43, fog: { color: "#1f160a", near: 9, far: 32 } },
+  { p: 0.44, pos: [-1.6, -0.3, -64], look: [1.6, 0.1, -80], fov: 45, fog: { color: "#231708", near: 9, far: 32 } },
+  // World 3 — The Creation Engine (Process)
+  { p: 0.618, pos: [1.6, 0.4, -82], look: [-1.6, 0, -96], fov: 44, fog: { color: "#150c20", near: 8, far: 30 } },
+  { p: 0.7, pos: [-1.8, -0.3, -98], look: [1.8, 0.1, -112], fov: 43, fog: { color: "#171025", near: 8, far: 30 } },
+  // World 5 — The Results Universe (Results)
+  { p: 0.773, pos: [1.4, 0.3, -112], look: [-1.4, 0, -124], fov: 45, fog: { color: "#081e22", near: 8, far: 30 } },
+  // World 6 — The Future (Testimonials)
+  { p: 0.815, pos: [-1.0, -0.3, -122], look: [1.0, 0.1, -134], fov: 46, fog: { color: "#140a20", near: 7, far: 28 } },
+  { p: 0.905, pos: [0, 0.3, -134], look: [0, 0, -144], fov: 44, fog: { color: "#0c0716", near: 4, far: 20 } },
+  // Collapse — the universe folds into the contact point (Contact)
+  { p: 1.0, pos: [0, 0, -148], look: [0, 0, -160], fov: 27, fog: { color: "#050507", near: 1, far: 11 } },
 ];
 
 const tmpA = new THREE.Vector3();

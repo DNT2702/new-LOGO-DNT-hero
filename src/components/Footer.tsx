@@ -25,7 +25,8 @@ const columns = [
 
 export function Footer() {
   return (
-    <footer className="relative overflow-hidden border-t border-white/8 pt-20">
+    <footer className="relative overflow-hidden pt-20">
+      <div className="signature-divider absolute inset-x-0 top-0" />
       <ParticleField className="absolute inset-0 h-full w-full opacity-40" density={70} color="76,224,255" />
 
       <Parallax speed={50} className="pointer-events-none absolute inset-0" aria-hidden="true">
@@ -69,7 +70,7 @@ export function Footer() {
         <div className="flex flex-col gap-12 py-16 lg:flex-row lg:justify-between">
           <div className="max-w-sm">
             <a href="#home" className="flex items-center gap-2" data-cursor-hover>
-              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-primary to-cyan font-display text-base font-bold text-void">
+              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-primary to-cyan font-display text-base font-bold text-void shadow-[0_0_16px_rgba(124,92,255,0.5)]">
                 D
               </span>
               <span className="font-display text-lg font-semibold tracking-tight">DNT Web</span>

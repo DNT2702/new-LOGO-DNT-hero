@@ -30,7 +30,7 @@ export function ServiceCard({ service, index }: { service: Service; index: numbe
     rotateY.set(0);
   };
 
-  const background = useMotionTemplate`radial-gradient(280px circle at ${mouseX}% ${mouseY}%, rgba(124,92,255,0.18), transparent 70%)`;
+  const background = useMotionTemplate`radial-gradient(280px circle at ${mouseX}% ${mouseY}%, color-mix(in srgb, ${service.colorA} 22%, transparent), transparent 70%)`;
 
   return (
     <motion.div
@@ -45,10 +45,19 @@ export function ServiceCard({ service, index }: { service: Service; index: numbe
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
         data-cursor-hover
-        style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-        className="group relative h-full overflow-hidden rounded-3xl border border-white/8 bg-white/[0.02] p-7 transition-colors duration-300 hover:border-white/15"
+        style={{
+          rotateX,
+          rotateY,
+          transformStyle: "preserve-3d",
+          boxShadow: "0 20px 50px -24px rgba(0,0,0,0.6), inset 0 1px 0 0 rgba(255,255,255,0.05)",
+        }}
+        className="group relative h-full overflow-hidden rounded-3xl border border-white/8 bg-white/[0.02] p-7 transition-[border-color,box-shadow] duration-300 hover:border-white/15 hover:shadow-[0_28px_64px_-24px_rgba(0,0,0,0.7)]"
       >
         <motion.div className="pointer-events-none absolute inset-0" style={{ background }} />
+
+        <span className="pointer-events-none absolute right-5 top-4 font-display text-5xl font-semibold text-white/[0.04]">
+          {String(index + 1).padStart(2, "0")}
+        </span>
 
         <div
           style={{ transform: "translateZ(40px)" }}

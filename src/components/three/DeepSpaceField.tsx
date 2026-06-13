@@ -33,10 +33,10 @@ function PortalRing({ z, color }: PortalRingProps) {
 }
 
 const portals: PortalRingProps[] = [
-  { z: -48, color: "#a78bfa" }, // into World 3 — Creation Engine
-  { z: -84, color: "#ffc56b" }, // into World 4 — Portfolio Museum
-  { z: -100, color: "#4ce0ff" }, // into World 5 — Results Universe
-  { z: -118, color: "#a78bfa" }, // into World 6 — The Future
+  { z: -44, color: "#ffc56b" }, // into World 4 — Portfolio Museum
+  { z: -82, color: "#a78bfa" }, // into World 3 — Creation Engine
+  { z: -112, color: "#4ce0ff" }, // into World 5 — Results Universe
+  { z: -122, color: "#a78bfa" }, // into World 6 — The Future
 ];
 
 /**
@@ -54,7 +54,7 @@ export function DeepSpaceField({ reduced = false }: { reduced?: boolean }) {
       const i3 = i * 3;
       positions[i3] = (Math.random() - 0.5) * 50;
       positions[i3 + 1] = (Math.random() - 0.5) * 30;
-      positions[i3 + 2] = -38 - Math.random() * 110;
+      positions[i3 + 2] = -10 - Math.random() * 150;
     }
     return positions;
   }, [count]);

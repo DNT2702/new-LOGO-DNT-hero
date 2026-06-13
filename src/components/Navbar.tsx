@@ -15,12 +15,31 @@ const links = [
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [active, setActive] = useState("");
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
     onScroll();
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    const sections = links
+      .map((link) => document.querySelector(link.href))
+      .filter((el): el is Element => !!el);
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActive(`#${entry.target.id}`);
+        });
+      },
+      { rootMargin: "-40% 0px -50% 0px", threshold: 0 }
+    );
+
+    sections.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
   }, []);
 
   return (
@@ -35,23 +54,36 @@ export function Navbar() {
         )}
       >
         <a href="#home" className="flex items-center gap-2" data-cursor-hover>
-          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-primary to-cyan font-display text-base font-bold text-void">
+          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-primary to-cyan font-display text-base font-bold text-void shadow-[0_0_16px_rgba(124,92,255,0.5)]">
             D
           </span>
           <span className="font-display text-lg font-semibold tracking-tight">DNT Web</span>
         </a>
 
         <nav className="hidden items-center gap-8 lg:flex">
-          {links.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              data-cursor-hover
-              className="text-sm font-medium text-muted transition-colors hover:text-foreground"
-            >
-              {link.label}
-            </a>
-          ))}
+          {links.map((link) => {
+            const isActive = active === link.href;
+            return (
+              <a
+                key={link.href}
+                href={link.href}
+                data-cursor-hover
+                className={cn(
+                  "relative text-sm font-medium transition-colors",
+                  isActive ? "text-foreground" : "text-muted hover:text-foreground"
+                )}
+              >
+                {link.label}
+                {isActive && (
+                  <motion.span
+                    layoutId="nav-active"
+                    className="absolute -bottom-1.5 left-0 right-0 h-px bg-gradient-to-r from-primary to-cyan"
+                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                  />
+                )}
+              </a>
+            );
+          })}
         </nav>
 
         <div className="hidden lg:block">

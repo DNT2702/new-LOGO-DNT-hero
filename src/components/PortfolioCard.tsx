@@ -31,7 +31,7 @@ export function PortfolioCard({ item }: { item: PortfolioItem }) {
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       data-cursor="view"
-      className="group relative h-[60vh] w-[85vw] shrink-0 overflow-hidden rounded-3xl border border-white/8 sm:w-[70vw] lg:h-[65vh] lg:w-[55vw]"
+      className="group relative h-[60vh] w-[85vw] shrink-0 overflow-hidden rounded-3xl border border-white/8 shadow-[0_30px_70px_-28px_rgba(0,0,0,0.7)] sm:w-[70vw] lg:h-[65vh] lg:w-[55vw]"
     >
       <div
         className="absolute inset-0 scale-105 opacity-70 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-100"

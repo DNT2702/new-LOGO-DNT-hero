@@ -19,8 +19,9 @@ function Lights() {
       <pointLight position={[4, 4, 4]} intensity={18} color="#a78bfa" />
       <pointLight position={[-4, -2, -3]} intensity={16} color="#4ce0ff" />
       <pointLight position={[0, 3, -4]} intensity={9} color="#ffc56b" />
-      <pointLight position={[0, 2, -90]} intensity={20} color="#ffc56b" />
-      <pointLight position={[0, -2, -130]} intensity={22} color="#7c5cff" />
+      <pointLight position={[0, 2, -64]} intensity={20} color="#ffc56b" />
+      <pointLight position={[0, -2, -98]} intensity={20} color="#7c5cff" />
+      <pointLight position={[0, 0, -130]} intensity={16} color="#4ce0ff" />
     </>
   );
 }
