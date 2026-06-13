@@ -4,7 +4,6 @@ import { EffectComposer, Bloom, Vignette, ChromaticAberration, DepthOfField } fr
 import { useScroll } from "motion/react";
 import * as THREE from "three";
 import { CameraRig } from "./CameraRig";
-import { World1Origin } from "./World1Origin";
 import { LogoAssembly } from "./LogoAssembly";
 import { TunnelTransition } from "./TunnelTransition";
 import { TechGalaxy } from "./TechGalaxy";
@@ -53,7 +52,6 @@ export function UniverseCanvas() {
           <Lights />
           <CameraRig progress={scrollYProgress} />
 
-          <World1Origin reduced={reduced} />
           {!reduced && <LogoAssembly progress={scrollYProgress} />}
           {!reduced && <TunnelTransition />}
           <TechGalaxy reduced={reduced} />
