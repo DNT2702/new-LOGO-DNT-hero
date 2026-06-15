@@ -1,6 +1,7 @@
 import type { OrbShape } from "@/components/three/MiniOrb";
 
 export interface Service {
+  portfolioSlug?: string;
   shape: OrbShape;
   colorA: string;
   colorB: string;
@@ -10,6 +11,7 @@ export interface Service {
 
 export const services: Service[] = [
   {
+    portfolioSlug: "solace-studio",
     shape: "icosahedron",
     colorA: "#7c5cff",
     colorB: "#4ce0ff",
@@ -17,6 +19,7 @@ export const services: Service[] = [
     description: "Lightning-fast, pixel-perfect websites engineered for conversion, built on modern frameworks.",
   },
   {
+    portfolioSlug: "lumora-skincare",
     shape: "box",
     colorA: "#ffc56b",
     colorB: "#7c5cff",
@@ -24,6 +27,7 @@ export const services: Service[] = [
     description: "Conversion-focused online stores with seamless checkout, inventory and payment integrations.",
   },
   {
+    portfolioSlug: "northpeak-capital",
     shape: "octahedron",
     colorA: "#4ce0ff",
     colorB: "#7c5cff",
@@ -31,6 +35,7 @@ export const services: Service[] = [
     description: "Scalable, secure web apps tailored to your workflows — built to grow with your business.",
   },
   {
+    portfolioSlug: "verve-fitness",
     shape: "torusKnot",
     colorA: "#7c5cff",
     colorB: "#ffc56b",
@@ -38,6 +43,7 @@ export const services: Service[] = [
     description: "Intelligent chatbots, automation agents and AI-powered features that work around the clock.",
   },
   {
+    portfolioSlug: "atlas-logistics",
     shape: "torus",
     colorA: "#4ce0ff",
     colorB: "#ffc56b",
@@ -66,3 +72,4 @@ export const services: Service[] = [
     description: "Award-worthy interfaces rooted in research, crafted to feel intuitive and premium.",
   },
 ];
+

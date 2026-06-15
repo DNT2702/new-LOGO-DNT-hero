@@ -1,7 +1,8 @@
-import { Suspense, useMemo, useRef } from "react";
+import { Suspense, useMemo, useRef, useState, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Sparkles } from "@react-three/drei";
 import * as THREE from "three";
+import gsap from "gsap";
 
 export type OrbShape = "icosahedron" | "box" | "octahedron" | "torusKnot" | "torus" | "cone" | "dodecahedron" | "sphere";
 
@@ -58,6 +59,14 @@ function Geometry({ shape }: { shape: OrbShape }) {
       return <icosahedronGeometry args={[1, 0]} />;
   }
 }
+const COLOR_PAIRS = [
+  { a: "#7c5cff", b: "#4ce0ff" }, // Purple / Cyan (original)
+  { a: "#ffc56b", b: "#ff5e62" }, // Gold / Crimson
+  { a: "#00f2fe", b: "#4facfe" }, // Cyan / Ice Blue
+  { a: "#30cfd0", b: "#330867" }, // Teal / Deep Violet
+  { a: "#f093fb", b: "#f5576c" }, // Pink / Rose
+  { a: "#43e97b", b: "#38f9d7" }, // Green / Turquoise
+];
 
 function Shape({ shape, colorA, colorB }: { shape: OrbShape; colorA: string; colorB: string }) {
   const meshRef = useRef<THREE.Mesh>(null);
@@ -89,19 +98,80 @@ function Shape({ shape, colorA, colorB }: { shape: OrbShape; colorA: string; col
     }
   });
 
+  const isSpinning = useRef(false);
+  const spinGroupRef = useRef<THREE.Group>(null);
+  
+  // Track color index locally for this orb instance
+  const paletteIndex = useRef(0);
+
+  const handleSpinClick = (e: any) => {
+    e.stopPropagation();
+    if (spinGroupRef.current && !isSpinning.current) {
+      isSpinning.current = true;
+      
+      // Determine next color index
+      paletteIndex.current = (paletteIndex.current + 1) % COLOR_PAIRS.length;
+      const nextPair = COLOR_PAIRS[paletteIndex.current];
+      const targetA = new THREE.Color(nextPair.a);
+      const targetB = new THREE.Color(nextPair.b);
+
+      // Spin rotation animation
+      gsap.to(spinGroupRef.current.rotation, {
+        y: spinGroupRef.current.rotation.y + Math.PI * 2,
+        x: spinGroupRef.current.rotation.x + Math.PI * 2,
+        duration: 1.2,
+        ease: "power2.inOut",
+        onComplete: () => {
+          isSpinning.current = false;
+        }
+      });
+
+      // Shift colors animation via uniforms
+      if (matRef.current) {
+        gsap.to(matRef.current.uniforms.uColorA.value, {
+          r: targetA.r,
+          g: targetA.g,
+          b: targetA.b,
+          duration: 1.2,
+          ease: "power2.inOut",
+        });
+        gsap.to(matRef.current.uniforms.uColorB.value, {
+          r: targetB.r,
+          g: targetB.g,
+          b: targetB.b,
+          duration: 1.2,
+          ease: "power2.inOut",
+        });
+      }
+    }
+  };
+
   return (
     <group ref={groupRef}>
-      <mesh ref={meshRef} scale={0.85}>
-        <Geometry shape={shape} />
-        <shaderMaterial
-          ref={matRef}
-          vertexShader={vertexShader}
-          fragmentShader={fragmentShader}
-          uniforms={uniforms}
-          transparent
-          depthWrite={false}
-        />
-      </mesh>
+      <group 
+        ref={spinGroupRef}
+        onPointerOver={(e) => {
+          e.stopPropagation();
+          document.body.style.cursor = 'pointer';
+        }}
+        onPointerOut={(e) => {
+          e.stopPropagation();
+          document.body.style.cursor = 'auto';
+        }}
+        onClick={handleSpinClick}
+      >
+        <mesh ref={meshRef} scale={0.85}>
+          <Geometry shape={shape} />
+          <shaderMaterial
+            ref={matRef}
+            vertexShader={vertexShader}
+            fragmentShader={fragmentShader}
+            uniforms={uniforms}
+            transparent
+            depthWrite={false}
+          />
+        </mesh>
+      </group>
     </group>
   );
 }
@@ -111,23 +181,49 @@ interface MiniOrbProps {
   colorA?: string;
   colorB?: string;
   className?: string;
+  eager?: boolean;
 }
 
-export function MiniOrb({ shape, colorA = "#7c5cff", colorB = "#4ce0ff", className }: MiniOrbProps) {
+export function MiniOrb({ shape, colorA = "#7c5cff", colorB = "#4ce0ff", className, eager = false }: MiniOrbProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [inView, setInView] = useState(eager);
+
+  useEffect(() => {
+    if (eager) return; // Skip observer if eager rendering is enabled
+    const el = containerRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setInView(entry.isIntersecting);
+      },
+      { threshold: 0, rootMargin: "150px" } // trigger 150px before entering viewport for a seamless appearance
+    );
+    observer.observe(el);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [eager]);
+
   return (
-    <Canvas
-      camera={{ position: [0, 0, 2.6], fov: 40 }}
-      dpr={1}
-      gl={{ alpha: true, antialias: true, powerPreference: "low-power" }}
-      className={className ?? "!touch-none"}
-    >
-      <Suspense fallback={null}>
-        <ambientLight intensity={0.6} />
-        <pointLight position={[2, 2, 2]} intensity={10} color={colorA} />
-        <pointLight position={[-2, -1, -2]} intensity={8} color={colorB} />
-        <Shape shape={shape} colorA={colorA} colorB={colorB} />
-        <Sparkles count={10} scale={2.4} size={1.2} speed={0.3} color={colorB} opacity={0.6} />
-      </Suspense>
-    </Canvas>
+    <div ref={containerRef} className={className ?? "h-full w-full"} style={{ minHeight: "100%" }}>
+      {inView ? (
+        <Canvas
+          camera={{ position: [0, 0, 2.6], fov: 40 }}
+          dpr={1}
+          gl={{ alpha: true, antialias: true, powerPreference: "low-power" }}
+          className="!touch-none"
+        >
+          <Suspense fallback={null}>
+            <ambientLight intensity={0.6} />
+            <pointLight position={[2, 2, 2]} intensity={10} color={colorA} />
+            <pointLight position={[-2, -1, -2]} intensity={8} color={colorB} />
+            <Shape shape={shape} colorA={colorA} colorB={colorB} />
+            <Sparkles count={10} scale={2.4} size={1.2} speed={0.3} color={colorB} opacity={0.6} />
+          </Suspense>
+        </Canvas>
+      ) : null}
+    </div>
   );
 }

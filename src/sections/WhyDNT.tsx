@@ -31,7 +31,7 @@ export function WhyDNT() {
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             className="rounded-3xl border border-white/8 bg-white/[0.015] p-6 shadow-[0_20px_50px_-24px_rgba(0,0,0,0.6)] sm:p-10"
           >
-            <h3 className="font-display text-2xl font-semibold text-muted">Traditional Agencies</h3>
+            <h3 className="font-display text-2xl font-semibold text-white/90">Traditional Agencies</h3>
             <div className="mt-8 flex flex-col gap-4">
               {comparisonRows.map((row, i) => (
                 <motion.div
@@ -43,9 +43,9 @@ export function WhyDNT() {
                   className="flex items-start gap-3 rounded-2xl border border-white/5 bg-white/[0.02] p-4"
                 >
                   <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white/5">
-                    <X className="h-3.5 w-3.5 text-muted" />
+                    <X className="h-3.5 w-3.5 text-white/70" />
                   </span>
-                  <span className="text-sm text-muted">{row.traditional}</span>
+                  <span className="text-sm text-white/90">{row.traditional}</span>
                 </motion.div>
               ))}
             </div>

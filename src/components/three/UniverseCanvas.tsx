@@ -2,6 +2,7 @@ import { Suspense, useEffect, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { EffectComposer, Bloom, Vignette, ChromaticAberration, DepthOfField } from "@react-three/postprocessing";
 import { useScroll } from "motion/react";
+import { useLocation } from "react-router-dom";
 import * as THREE from "three";
 import { CameraRig } from "./CameraRig";
 import { LogoAssembly } from "./LogoAssembly";
@@ -32,16 +33,26 @@ function Lights() {
 export function UniverseCanvas() {
   const [reduced, setReduced] = useState(false);
   const { scrollYProgress } = useScroll();
+  const location = useLocation();
+  const isHome = location.pathname === "/";
 
   useEffect(() => {
     setReduced(window.innerWidth < 768 || window.matchMedia("(prefers-reduced-motion: reduce)").matches);
   }, []);
 
   return (
-    <div className="pointer-events-none fixed inset-0 z-0" aria-hidden="true">
+    <div 
+      className="pointer-events-none fixed inset-0 z-0 transition-opacity duration-300" 
+      style={{ 
+        display: isHome ? "block" : "none", 
+        visibility: isHome ? "visible" : "hidden" 
+      }}
+      aria-hidden="true"
+    >
       <Canvas
         camera={{ position: [0, 0, 6.4], fov: 38, far: 250 }}
         dpr={[1, reduced ? 1.25 : 1.5]}
+        frameloop={isHome ? "always" : "never"}
         gl={{ antialias: true, alpha: false, powerPreference: "high-performance" }}
         eventSource={document.body}
         eventPrefix="page"

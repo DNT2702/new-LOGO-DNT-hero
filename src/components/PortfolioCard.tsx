@@ -2,10 +2,12 @@ import { useRef } from "react";
 import type { MouseEvent } from "react";
 import { motion, useMotionTemplate, useMotionValue, useSpring } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import type { PortfolioItem } from "@/data/portfolio";
 
 export function PortfolioCard({ item }: { item: PortfolioItem }) {
   const ref = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
   const mouseX = useMotionValue(50);
   const mouseY = useMotionValue(50);
   const shineOpacity = useSpring(0, { damping: 24, stiffness: 200 });
@@ -30,8 +32,9 @@ export function PortfolioCard({ item }: { item: PortfolioItem }) {
       ref={ref}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
+      onClick={() => navigate(`/work/${item.slug}`)}
       data-cursor="view"
-      className="group relative h-[60vh] w-[85vw] shrink-0 overflow-hidden rounded-3xl border border-white/8 shadow-[0_30px_70px_-28px_rgba(0,0,0,0.7)] sm:w-[70vw] lg:h-[65vh] lg:w-[55vw]"
+      className="group relative h-[60vh] w-[85vw] shrink-0 cursor-pointer overflow-hidden rounded-3xl border border-white/8 shadow-[0_30px_70px_-28px_rgba(0,0,0,0.7)] sm:w-[70vw] lg:h-[65vh] lg:w-[55vw]"
     >
       <div
         className="absolute inset-0 scale-105 opacity-70 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-100"

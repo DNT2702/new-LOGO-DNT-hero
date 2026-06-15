@@ -1,21 +1,78 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
 import { Menu, X, ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Magnetic } from "@/components/MagneticButton";
 
 const links = [
-  { label: "Services", href: "#services" },
-  { label: "Why DNT", href: "#why-dnt" },
-  { label: "Work", href: "#portfolio" },
-  { label: "Process", href: "#process" },
-  { label: "Testimonials", href: "#testimonials" },
+  { label: "Services", href: "services" },
+  { label: "Why DNT", href: "why-dnt" },
+  { label: "Work", href: "portfolio" },
+  { label: "Process", href: "process" },
+  { label: "Testimonials", href: "testimonials" },
 ];
+
+function CanvasLogo() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const img = new Image();
+    img.src = '/dnt logo.jpg';
+    img.crossOrigin = 'Anonymous';
+    img.onload = () => {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext('2d', { willReadFrequently: true });
+      if (!ctx) return;
+
+      ctx.drawImage(img, 0, 0);
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const data = imageData.data;
+
+      for (let i = 0; i < data.length; i += 4) {
+        const pixelIndex = i / 4;
+        const x = pixelIndex % canvas.width;
+        const y = Math.floor(pixelIndex / canvas.width);
+
+        // Erase "DNT WEB" text on the top left
+        if (x < canvas.width * 0.35 && y < canvas.height * 0.35) {
+          data[i + 3] = 0;
+          continue;
+        }
+
+        const brightness = (data[i] * 0.299 + data[i + 1] * 0.587 + data[i + 2] * 0.114);
+        
+        // Smooth anti-aliasing for sharp crisp edges
+        let alpha = 255;
+        if (brightness > 220) {
+          alpha = 0; // Pure white background becomes fully transparent
+        } else if (brightness > 120) {
+          // Smoothly fade the edge pixels
+          alpha = 255 - ((brightness - 120) / 100) * 255;
+        }
+
+        // Turn the dark logo pure white
+        data[i] = 255;     // R
+        data[i + 1] = 255; // G
+        data[i + 2] = 255; // B
+        data[i + 3] = alpha; // A
+      }
+      ctx.putImageData(imageData, 0, 0);
+    };
+  }, []);
+
+  return <canvas ref={canvasRef} className="h-full w-full object-contain scale-[2.5] origin-right translate-x-3" style={{ objectPosition: 'right center' }} />;
+}
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("");
+
+  const location = useLocation();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -25,14 +82,20 @@ export function Navbar() {
   }, []);
 
   useEffect(() => {
+    // Only set active based on intersection if we are on the home page
+    if (location.pathname !== "/") {
+      setActive("");
+      return;
+    }
+
     const sections = links
-      .map((link) => document.querySelector(link.href))
+      .map((link) => document.querySelector(`#${link.href}`))
       .filter((el): el is Element => !!el);
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) setActive(`#${entry.target.id}`);
+          if (entry.isIntersecting) setActive(entry.target.id);
         });
       },
       { rootMargin: "-40% 0px -50% 0px", threshold: 0 }
@@ -40,7 +103,7 @@ export function Navbar() {
 
     sections.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
-  }, []);
+  }, [location.pathname]);
 
   return (
     <header className="fixed inset-x-0 top-0 z-50">
@@ -53,20 +116,20 @@ export function Navbar() {
           scrolled ? "glass-strong shadow-[0_8px_32px_rgba(0,0,0,0.4)]" : "bg-transparent"
         )}
       >
-        <a href="#home" className="flex items-center gap-2" data-cursor-hover>
-          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-primary to-cyan font-display text-base font-bold text-void shadow-[0_0_16px_rgba(124,92,255,0.5)]">
-            D
-          </span>
-          <span className="font-display text-lg font-semibold tracking-tight">DNT Web</span>
-        </a>
+        <Link to="/" className="flex items-center gap-0 ml-10" data-cursor-hover>
+          <div className="relative flex h-12 w-14 items-center justify-center bg-transparent -mr-4">
+            <CanvasLogo />
+          </div>
+          <span className="font-display text-xl font-semibold tracking-tight">Web</span>
+        </Link>
 
         <nav className="hidden items-center gap-8 lg:flex">
           {links.map((link) => {
             const isActive = active === link.href;
             return (
-              <a
+              <Link
                 key={link.href}
-                href={link.href}
+                to={`/#${link.href}`}
                 data-cursor-hover
                 className={cn(
                   "relative text-sm font-medium transition-colors",
@@ -81,21 +144,21 @@ export function Navbar() {
                     transition={{ type: "spring", stiffness: 380, damping: 30 }}
                   />
                 )}
-              </a>
+              </Link>
             );
           })}
         </nav>
 
         <div className="hidden lg:block">
           <Magnetic strength={0.3}>
-            <a
-              href="#contact"
+            <Link
+              to="/#contact"
               data-cursor-hover
               className="group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-primary to-cyan px-5 py-2.5 text-sm font-semibold text-void transition-shadow hover:shadow-[0_0_30px_rgba(124,92,255,0.4)]"
             >
               Get In Touch
               <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </a>
+            </Link>
           </Magnetic>
         </div>
 
@@ -120,22 +183,22 @@ export function Navbar() {
           >
             <div className="glass-strong flex flex-col gap-1 rounded-3xl p-4">
               {links.map((link) => (
-                <a
+                <Link
                   key={link.href}
-                  href={link.href}
+                  to={`/#${link.href}`}
                   onClick={() => setOpen(false)}
                   className="rounded-xl px-4 py-3 text-sm font-medium text-muted transition-colors hover:bg-white/5 hover:text-foreground"
                 >
                   {link.label}
-                </a>
+                </Link>
               ))}
-              <a
-                href="#contact"
+              <Link
+                to="/#contact"
                 onClick={() => setOpen(false)}
                 className="mt-2 rounded-xl bg-gradient-to-r from-primary to-cyan px-4 py-3 text-center text-sm font-semibold text-void"
               >
                 Get In Touch
-              </a>
+              </Link>
             </div>
           </motion.div>
         )}

@@ -86,30 +86,55 @@ export function Button({
   );
 }
 
+import { Link } from "react-router-dom";
+
 export function LinkButton({
   children,
   variant = "primary",
   className,
   icon,
   onClick,
+  href = "",
   ...props
 }: BaseProps & AnchorHTMLAttributes<HTMLAnchorElement>) {
   const { ripples, addRipple } = useRipple();
+  
+  const isExternal = href.startsWith("http") || href.startsWith("mailto:");
+  if (isExternal) {
+    return (
+      <Magnetic strength={0.3}>
+        <a
+          className={cn(base, variants[variant], className)}
+          onClick={(e) => {
+            addRipple(e);
+            onClick?.(e);
+          }}
+          href={href}
+          {...props}
+        >
+          <span className="relative z-10">{children}</span>
+          {icon && <span className="relative z-10 transition-transform duration-300 group-hover:translate-x-1">{icon}</span>}
+          <Ripples ripples={ripples} />
+        </a>
+      </Magnetic>
+    );
+  }
 
   return (
     <Magnetic strength={0.3}>
-      <a
+      <Link
+        to={href}
         className={cn(base, variants[variant], className)}
-        onClick={(e) => {
+        onClick={(e: any) => {
           addRipple(e);
           onClick?.(e);
         }}
-        {...props}
+        {...(props as any)}
       >
         <span className="relative z-10">{children}</span>
         {icon && <span className="relative z-10 transition-transform duration-300 group-hover:translate-x-1">{icon}</span>}
         <Ripples ripples={ripples} />
-      </a>
+      </Link>
     </Magnetic>
   );
 }

@@ -8,11 +8,29 @@ import { GlowOrbs } from "@/components/GlowOrbs";
 import { Parallax } from "@/components/Parallax";
 import { Magnetic } from "@/components/MagneticButton";
 
-const projectTypes = ["Website", "E-Commerce", "Web Application", "Automation / AI", "Other"];
-const budgets = ["Under $5k", "$5k – $15k", "$15k – $40k", "$40k+"];
+const projectTypes = ["Website", "E-Commerce", "Web Application", "Automation / AI", "SEO", "Other"];
+const budgets = ["6,000 Rupees (Starter Pack)", "8,000 to 10,000 Rupees (Growth Pack)", "15,000+ Rupees (Premium Pack)"];
+
+const countryCodes = [
+  { code: "+91", flag: "🇮🇳" },
+  { code: "+1", flag: "🇺🇸" },
+  { code: "+44", flag: "🇬🇧" },
+  { code: "+971", flag: "🇦🇪" },
+  { code: "+61", flag: "🇦🇺" },
+  { code: "+65", flag: "🇸🇬" },
+];
 
 export function Contact() {
   const [submitted, setSubmitted] = useState(false);
+  const [phone, setPhone] = useState("");
+  const [countryCode, setCountryCode] = useState("+91");
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value.replace(/\D/g, "");
+    if (val.length <= 10) {
+      setPhone(val);
+    }
+  };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -44,7 +62,7 @@ export function Contact() {
             className="flex flex-col gap-4 lg:col-span-2"
           >
             <a
-              href="mailto:hello@dntweb.com"
+              href="mailto:dntweb2702@gmail.com"
               data-cursor-hover
               className="glass group flex items-center gap-4 rounded-2xl p-5 transition-colors hover:border-white/20"
             >
@@ -53,7 +71,7 @@ export function Contact() {
               </span>
               <div>
                 <div className="text-xs uppercase tracking-widest text-muted">Email Us</div>
-                <div className="font-medium text-foreground">hello@dntweb.com</div>
+                <div className="font-medium text-foreground">dntweb2702@gmail.com</div>
               </div>
               <ArrowRight className="ml-auto h-4 w-4 text-muted transition-transform group-hover:translate-x-1" />
             </a>
@@ -94,7 +112,7 @@ export function Contact() {
               <p className="text-sm leading-relaxed text-muted">
                 Whether you need a stunning new website, a custom application, or an AI-powered
                 automation system — our team is ready to bring it to life with the same care and
-                craft you'd expect from a top-tier agency.
+                craft you'd expect from a top-tier agency. We focus on creating high-performance digital products that drive measurable business outcomes, increase engagement, and scale seamlessly as your business grows. Let's build your next digital solution together.
               </p>
             </div>
           </motion.div>
@@ -122,7 +140,38 @@ export function Contact() {
               <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                 <Field label="Full Name" name="name" placeholder="Jane Doe" required />
                 <Field label="Email Address" name="email" type="email" placeholder="jane@company.com" required />
-                <Field label="Company" name="company" placeholder="Acme Inc." className="sm:col-span-2" />
+                
+                {/* Phone Number with Country Code Dropdown */}
+                <div>
+                  <label className="mb-2 block text-xs uppercase tracking-widest text-muted" htmlFor="phone">
+                    Phone Number
+                  </label>
+                  <div className="flex gap-2">
+                    <select
+                      value={countryCode}
+                      onChange={(e) => setCountryCode(e.target.value)}
+                      className="rounded-2xl border border-white/10 bg-white/[0.03] px-3 py-3 text-sm text-foreground outline-none transition-colors focus:border-primary/50 cursor-pointer"
+                    >
+                      {countryCodes.map((c) => (
+                        <option key={c.code} value={c.code} className="bg-void text-foreground">
+                          {c.flag} {c.code}
+                        </option>
+                      ))}
+                    </select>
+                    <input
+                      id="phone"
+                      name="phone"
+                      type="tel"
+                      value={phone}
+                      onChange={handlePhoneChange}
+                      required
+                      placeholder="98765 43210"
+                      className="w-full flex-1 rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-foreground placeholder:text-muted/60 outline-none transition-colors focus:border-primary/50"
+                    />
+                  </div>
+                </div>
+
+                <Field label="Company" name="company" placeholder="Acme Inc." />
 
                 <div className="sm:col-span-2">
                   <label className="mb-2 block text-xs uppercase tracking-widest text-muted">Project Type</label>
